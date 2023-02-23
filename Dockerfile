@@ -9,7 +9,10 @@ RUN apk update && \
     apk add curl tar && \
     curl -LO https://github.com/ethereum/solidity/releases/download/v0.8.18/solidity_0.8.18.tar.gz && \
     tar -xzf solidity_0.8.18.tar.gz && \
-    rm solidity_0.8.18.tar.gz
+    rm solidity_0.8.18.tar.gz && \
+    cd solidity_0.8.18 && \
+    chmod +x solc && \
+    mv solc /usr/local/bin/
 
 WORKDIR /app
 COPY . /app
