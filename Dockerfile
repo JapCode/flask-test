@@ -5,6 +5,12 @@ RUN apk update && \
     curl https://bootstrap.pypa.io/get-pip.py | python3 && \
     rm -rf /var/cache/apk/*
 
+RUN apk update && \
+    apk add curl tar && \
+    curl -LO https://github.com/ethereum/solidity/releases/download/v0.8.18/solidity_0.8.18.tar.gz && \
+    tar -xzf solidity_0.8.18.tar.gz && \
+    rm solidity_0.8.18.tar.gz
+
 WORKDIR /app
 COPY . /app
 RUN pip3 install --no-cache-dir -r requirements.txt
