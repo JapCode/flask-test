@@ -14,6 +14,8 @@ RUN apk update && \
     chmod +x solc && \
     mv solc /usr/local/bin/
 
+RUN chmod +x /usr/local/bin/solc
+
 WORKDIR /app
 COPY . /app
 RUN pip3 install --no-cache-dir -r requirements.txt
