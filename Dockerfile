@@ -1,27 +1,24 @@
-FROM alpine:3.17
+FROM ubuntu:20.04
 
-RUN apk update && \
-    apk add --no-cache python3 python3-dev curl && \
-    curl https://bootstrap.pypa.io/get-pip.py | python3 && \
-    rm -rf /var/cache/apk/*
+ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apk update && \
-    apk add curl tar && \
-    curl -LO https://github.com/ethereum/solidity/releases/download/v0.8.18/solidity_0.8.18.tar.gz && \
-    tar -xzf solidity_0.8.18.tar.gz && \
-    rm solidity_0.8.18.tar.gz && \
-    cd solidity_0.8.18 && \
-    chmod +x solc && \
-    mv solc /usr/local/bin/
+RUN apt-get update && \
+    apt-get install -y python3 python3-dev python3-pip curl && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN chmod +x /usr/local/bin/solc
+# RUN apt-get update && \
+#     apt-get install -y cmake
+
+RUN apt-get update && \
+    apt-get install -y software-properties-common && \
+    add-apt-repository ppa:ethereum/ethereum && \
+    apt-get update && \
+    apt-get install -y solc
 
 WORKDIR /app
 COPY . /app
 RUN pip3 install --no-cache-dir -r requirements.txt
 
 EXPOSE 5000
-
-USER root
 
 CMD ["python3", "src/app.py"]
