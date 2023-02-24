@@ -1,17 +1,9 @@
 FROM alpine:3.17
 
 RUN apk update && \
-    apk add sudo && \
-    addgroup -S sudo && \
-    adduser -S user && \
-    addgroup user sudo && \
-    echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-
-RUN apk update && \
     apk add --no-cache python3 python3-dev curl && \
     curl https://bootstrap.pypa.io/get-pip.py | python3 && \
     rm -rf /var/cache/apk/*
-
 
 RUN apk update && \
     apk add curl tar && \
@@ -29,5 +21,7 @@ COPY . /app
 RUN pip3 install --no-cache-dir -r requirements.txt
 
 EXPOSE 5000
+
+USER root
 
 CMD ["python3", "src/app.py"]
